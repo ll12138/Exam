@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxy.dao.ExaminationPaperMapper">
+  <resultMap id="BaseResultMap" type="com.oxy.model.ExaminationPaper">
+    <id column="PaperID" jdbcType="INTEGER" property="paperid" />
+    <result column="QuestionIds" jdbcType="VARCHAR" property="questionids" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="SAQIds" jdbcType="VARCHAR" property="saqids" />
+    <result column="SelectNum" jdbcType="INTEGER" property="selectnum" />
+    <result column="SAQNum" jdbcType="INTEGER" property="saqnum" />
+    <result column="Score" jdbcType="INTEGER" property="score" />
+    <result column="Subject" jdbcType="VARCHAR" property="subject" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createuser" />
+    <result column="TotalSelect" jdbcType="INTEGER" property="totalselect" />
+    <result column="TotalSAQ" jdbcType="INTEGER" property="totalsaq" />
+    <result column="SelectScore" jdbcType="INTEGER" property="selectscore" />
+    <result column="SAQScore" jdbcType="INTEGER" property="saqscore" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    PaperID, QuestionIds, Name, SAQIds, SelectNum, SAQNum, Score, Subject, CreateUser, 
+    TotalSelect, TotalSAQ, SelectScore, SAQScore
+  </sql>
+  <select id="selectByExample" parameterType="com.oxy.model.ExaminationPaperExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from examinationpaper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from examinationpaper
+    where PaperID = #{paperid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from examinationpaper
+    where PaperID = #{paperid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.oxy.model.ExaminationPaperExample">
+    delete from examinationpaper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.oxy.model.ExaminationPaper">
+    insert into examinationpaper (PaperID, QuestionIds, Name, 
+      SAQIds, SelectNum, SAQNum, 
+      Score, Subject, CreateUser, 
+      TotalSelect, TotalSAQ, SelectScore, 
+      SAQScore)
+    values (#{paperid,jdbcType=INTEGER}, #{questionids,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{saqids,jdbcType=VARCHAR}, #{selectnum,jdbcType=INTEGER}, #{saqnum,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{subject,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{totalselect,jdbcType=INTEGER}, #{totalsaq,jdbcType=INTEGER}, #{selectscore,jdbcType=INTEGER}, 
+      #{saqscore,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oxy.model.ExaminationPaper">
+    insert into examinationpaper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paperid != null">
+        PaperID,
+      </if>
+      <if test="questionids != null">
+        QuestionIds,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="saqids != null">
+        SAQIds,
+      </if>
+      <if test="selectnum != null">
+        SelectNum,
+      </if>
+      <if test="saqnum != null">
+        SAQNum,
+      </if>
+      <if test="score != null">
+        Score,
+      </if>
+      <if test="subject != null">
+        Subject,
+      </if>
+      <if test="createuser != null">
+        CreateUser,
+      </if>
+      <if test="totalselect != null">
+        TotalSelect,
+      </if>
+      <if test="totalsaq != null">
+        TotalSAQ,
+      </if>
+      <if test="selectscore != null">
+        SelectScore,
+      </if>
+      <if test="saqscore != null">
+        SAQScore,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paperid != null">
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="questionids != null">
+        #{questionids,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="saqids != null">
+        #{saqids,jdbcType=VARCHAR},
+      </if>
+      <if test="selectnum != null">
+        #{selectnum,jdbcType=INTEGER},
+      </if>
+      <if test="saqnum != null">
+        #{saqnum,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="totalselect != null">
+        #{totalselect,jdbcType=INTEGER},
+      </if>
+      <if test="totalsaq != null">
+        #{totalsaq,jdbcType=INTEGER},
+      </if>
+      <if test="selectscore != null">
+        #{selectscore,jdbcType=INTEGER},
+      </if>
+      <if test="saqscore != null">
+        #{saqscore,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.oxy.model.ExaminationPaperExample" resultType="java.lang.Long">
+    select count(*) from examinationpaper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update examinationpaper
+    <set>
+      <if test="record.paperid != null">
+        PaperID = #{record.paperid,jdbcType=INTEGER},
+      </if>
+      <if test="record.questionids != null">
+        QuestionIds = #{record.questionids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        Name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saqids != null">
+        SAQIds = #{record.saqids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selectnum != null">
+        SelectNum = #{record.selectnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.saqnum != null">
+        SAQNum = #{record.saqnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.score != null">
+        Score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.subject != null">
+        Subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createuser != null">
+        CreateUser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalselect != null">
+        TotalSelect = #{record.totalselect,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalsaq != null">
+        TotalSAQ = #{record.totalsaq,jdbcType=INTEGER},
+      </if>
+      <if test="record.selectscore != null">
+        SelectScore = #{record.selectscore,jdbcType=INTEGER},
+      </if>
+      <if test="record.saqscore != null">
+        SAQScore = #{record.saqscore,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update examinationpaper
+    set PaperID = #{record.paperid,jdbcType=INTEGER},
+      QuestionIds = #{record.questionids,jdbcType=VARCHAR},
+      Name = #{record.name,jdbcType=VARCHAR},
+      SAQIds = #{record.saqids,jdbcType=VARCHAR},
+      SelectNum = #{record.selectnum,jdbcType=INTEGER},
+      SAQNum = #{record.saqnum,jdbcType=INTEGER},
+      Score = #{record.score,jdbcType=INTEGER},
+      Subject = #{record.subject,jdbcType=VARCHAR},
+      CreateUser = #{record.createuser,jdbcType=VARCHAR},
+      TotalSelect = #{record.totalselect,jdbcType=INTEGER},
+      TotalSAQ = #{record.totalsaq,jdbcType=INTEGER},
+      SelectScore = #{record.selectscore,jdbcType=INTEGER},
+      SAQScore = #{record.saqscore,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oxy.model.ExaminationPaper">
+    update examinationpaper
+    <set>
+      <if test="questionids != null">
+        QuestionIds = #{questionids,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="saqids != null">
+        SAQIds = #{saqids,jdbcType=VARCHAR},
+      </if>
+      <if test="selectnum != null">
+        SelectNum = #{selectnum,jdbcType=INTEGER},
+      </if>
+      <if test="saqnum != null">
+        SAQNum = #{saqnum,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        Score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null">
+        Subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        CreateUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="totalselect != null">
+        TotalSelect = #{totalselect,jdbcType=INTEGER},
+      </if>
+      <if test="totalsaq != null">
+        TotalSAQ = #{totalsaq,jdbcType=INTEGER},
+      </if>
+      <if test="selectscore != null">
+        SelectScore = #{selectscore,jdbcType=INTEGER},
+      </if>
+      <if test="saqscore != null">
+        SAQScore = #{saqscore,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PaperID = #{paperid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oxy.model.ExaminationPaper">
+    update examinationpaper
+    set QuestionIds = #{questionids,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR},
+      SAQIds = #{saqids,jdbcType=VARCHAR},
+      SelectNum = #{selectnum,jdbcType=INTEGER},
+      SAQNum = #{saqnum,jdbcType=INTEGER},
+      Score = #{score,jdbcType=INTEGER},
+      Subject = #{subject,jdbcType=VARCHAR},
+      CreateUser = #{createuser,jdbcType=VARCHAR},
+      TotalSelect = #{totalselect,jdbcType=INTEGER},
+      TotalSAQ = #{totalsaq,jdbcType=INTEGER},
+      SelectScore = #{selectscore,jdbcType=INTEGER},
+      SAQScore = #{saqscore,jdbcType=INTEGER}
+    where PaperID = #{paperid,jdbcType=INTEGER}
+  </update>
+</mapper>

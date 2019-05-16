@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.oxy.dao.ext.ExtExamMapper">
+    <select id="callProcedure">
+        call set_exam_status
+    </select>
+    
+    
+    <select id="getPage" resultType="java.util.LinkedHashMap">
+       SELECT 
+            e.examId as "examId",
+            e.examName as "examName",
+            e.paperId as "paperId",
+            p.Name as "paperName",
+            e.classids as "classIds",
+            e.beginTime as "beginTime",
+            e.endTime as "endTime",
+            e.status as "status",
+            e.subject as "subject",
+            e.createUser as "userId",
+            u.Name as "createUser"
+        from examination e
+        left  join user u on u.UserID=e.CreateUser
+        LEFT JOIN examinationpaper p on p.PaperID=e.paperId
+        <where>
+            <if test="vo.examName !=null and vo.examName !=''">
+              and  e.examName like concat('%',#{vo.examName},'%')
+            </if>
+            <if test="vo.paperName !=null and vo.paperName !=''">
+               and  p.Name like concat('%',#{vo.paperName},'%')
+            </if>
+            <if test="vo.createName !=null and vo.createName !=''">
+               and  u.Name like concat('%',#{vo.createName},'%')
+            </if>
+            <if test="vo.classId !=null">
+               and u.classId= #{vo.classId}
+            </if>
+            <if test="vo.status !=null and vo.status !=''">
+               and e.status=#{vo.status}
+            </if>
+            
+            
+        </where>
+    
+    </select>
+    
+  </mapper>

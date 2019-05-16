@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxy.dao.UserAnswerMapper">
+  <resultMap id="BaseResultMap" type="com.oxy.model.UserAnswer">
+    <id column="questionId" jdbcType="INTEGER" property="questionid" />
+    <id column="userId" jdbcType="INTEGER" property="userid" />
+    <id column="type" jdbcType="CHAR" property="type" />
+    <id column="paperId" jdbcType="INTEGER" property="paperid" />
+    <id column="examId" jdbcType="INTEGER" property="examid" />
+    <result column="userAnswer" jdbcType="VARCHAR" property="useranswer" />
+    <result column="Answer" jdbcType="VARCHAR" property="answer" />
+    <result column="isCorrrent" jdbcType="BIT" property="iscorrrent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    questionId, userId, type, paperId, examId, userAnswer, Answer, isCorrrent
+  </sql>
+  <select id="selectByExample" parameterType="com.oxy.model.UserAnswerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_answer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.oxy.model.UserAnswerKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_answer
+    where questionId = #{questionid,jdbcType=INTEGER}
+      and userId = #{userid,jdbcType=INTEGER}
+      and type = #{type,jdbcType=CHAR}
+      and paperId = #{paperid,jdbcType=INTEGER}
+      and examId = #{examid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.oxy.model.UserAnswerKey">
+    delete from user_answer
+    where questionId = #{questionid,jdbcType=INTEGER}
+      and userId = #{userid,jdbcType=INTEGER}
+      and type = #{type,jdbcType=CHAR}
+      and paperId = #{paperid,jdbcType=INTEGER}
+      and examId = #{examid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.oxy.model.UserAnswerExample">
+    delete from user_answer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.oxy.model.UserAnswer">
+    insert into user_answer (questionId, userId, type, 
+      paperId, examId, userAnswer, 
+      Answer, isCorrrent)
+    values (#{questionid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, 
+      #{paperid,jdbcType=INTEGER}, #{examid,jdbcType=INTEGER}, #{useranswer,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{iscorrrent,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oxy.model.UserAnswer">
+    insert into user_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="paperid != null">
+        paperId,
+      </if>
+      <if test="examid != null">
+        examId,
+      </if>
+      <if test="useranswer != null">
+        userAnswer,
+      </if>
+      <if test="answer != null">
+        Answer,
+      </if>
+      <if test="iscorrrent != null">
+        isCorrrent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="paperid != null">
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="examid != null">
+        #{examid,jdbcType=INTEGER},
+      </if>
+      <if test="useranswer != null">
+        #{useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="iscorrrent != null">
+        #{iscorrrent,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.oxy.model.UserAnswerExample" resultType="java.lang.Long">
+    select count(*) from user_answer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_answer
+    <set>
+      <if test="record.questionid != null">
+        questionId = #{record.questionid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null">
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.paperid != null">
+        paperId = #{record.paperid,jdbcType=INTEGER},
+      </if>
+      <if test="record.examid != null">
+        examId = #{record.examid,jdbcType=INTEGER},
+      </if>
+      <if test="record.useranswer != null">
+        userAnswer = #{record.useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.answer != null">
+        Answer = #{record.answer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iscorrrent != null">
+        isCorrrent = #{record.iscorrrent,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_answer
+    set questionId = #{record.questionid,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR},
+      paperId = #{record.paperid,jdbcType=INTEGER},
+      examId = #{record.examid,jdbcType=INTEGER},
+      userAnswer = #{record.useranswer,jdbcType=VARCHAR},
+      Answer = #{record.answer,jdbcType=VARCHAR},
+      isCorrrent = #{record.iscorrrent,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oxy.model.UserAnswer">
+    update user_answer
+    <set>
+      <if test="useranswer != null">
+        userAnswer = #{useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        Answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="iscorrrent != null">
+        isCorrrent = #{iscorrrent,jdbcType=BIT},
+      </if>
+    </set>
+    where questionId = #{questionid,jdbcType=INTEGER}
+      and userId = #{userid,jdbcType=INTEGER}
+      and type = #{type,jdbcType=CHAR}
+      and paperId = #{paperid,jdbcType=INTEGER}
+      and examId = #{examid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oxy.model.UserAnswer">
+    update user_answer
+    set userAnswer = #{useranswer,jdbcType=VARCHAR},
+      Answer = #{answer,jdbcType=VARCHAR},
+      isCorrrent = #{iscorrrent,jdbcType=BIT}
+    where questionId = #{questionid,jdbcType=INTEGER}
+      and userId = #{userid,jdbcType=INTEGER}
+      and type = #{type,jdbcType=CHAR}
+      and paperId = #{paperid,jdbcType=INTEGER}
+      and examId = #{examid,jdbcType=INTEGER}
+  </update>
+</mapper>

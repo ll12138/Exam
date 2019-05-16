@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxy.dao.ExaminationMapper">
+  <resultMap id="BaseResultMap" type="com.oxy.model.Examination">
+    <id column="examId" jdbcType="INTEGER" property="examid" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="examName" jdbcType="VARCHAR" property="examname" />
+    <result column="paperId" jdbcType="INTEGER" property="paperid" />
+    <result column="beginTime" jdbcType="TIMESTAMP" property="begintime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="classids" jdbcType="VARCHAR" property="classids" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="createUser" jdbcType="VARCHAR" property="createuser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    examId, subject, examName, paperId, beginTime, endTime, classids, status, createUser
+  </sql>
+  <select id="selectByExample" parameterType="com.oxy.model.ExaminationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from examination
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from examination
+    where examId = #{examid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from examination
+    where examId = #{examid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.oxy.model.ExaminationExample">
+    delete from examination
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.oxy.model.Examination">
+    insert into examination (examId, subject, examName, 
+      paperId, beginTime, endTime, 
+      classids, status, createUser
+      )
+    values (#{examid,jdbcType=INTEGER}, #{subject,jdbcType=VARCHAR}, #{examname,jdbcType=VARCHAR}, 
+      #{paperid,jdbcType=INTEGER}, #{begintime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{classids,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createuser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.oxy.model.Examination">
+    insert into examination
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="examid != null">
+        examId,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="examname != null">
+        examName,
+      </if>
+      <if test="paperid != null">
+        paperId,
+      </if>
+      <if test="begintime != null">
+        beginTime,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+      <if test="classids != null">
+        classids,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createuser != null">
+        createUser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="examid != null">
+        #{examid,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="examname != null">
+        #{examname,jdbcType=VARCHAR},
+      </if>
+      <if test="paperid != null">
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="classids != null">
+        #{classids,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.oxy.model.ExaminationExample" resultType="java.lang.Long">
+    select count(*) from examination
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update examination
+    <set>
+      <if test="record.examid != null">
+        examId = #{record.examid,jdbcType=INTEGER},
+      </if>
+      <if test="record.subject != null">
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.examname != null">
+        examName = #{record.examname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperid != null">
+        paperId = #{record.paperid,jdbcType=INTEGER},
+      </if>
+      <if test="record.begintime != null">
+        beginTime = #{record.begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endtime != null">
+        endTime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.classids != null">
+        classids = #{record.classids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.createuser != null">
+        createUser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update examination
+    set examId = #{record.examid,jdbcType=INTEGER},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      examName = #{record.examname,jdbcType=VARCHAR},
+      paperId = #{record.paperid,jdbcType=INTEGER},
+      beginTime = #{record.begintime,jdbcType=TIMESTAMP},
+      endTime = #{record.endtime,jdbcType=TIMESTAMP},
+      classids = #{record.classids,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      createUser = #{record.createuser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oxy.model.Examination">
+    update examination
+    <set>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="examname != null">
+        examName = #{examname,jdbcType=VARCHAR},
+      </if>
+      <if test="paperid != null">
+        paperId = #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        beginTime = #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="classids != null">
+        classids = #{classids,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null">
+        createUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where examId = #{examid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oxy.model.Examination">
+    update examination
+    set subject = #{subject,jdbcType=VARCHAR},
+      examName = #{examname,jdbcType=VARCHAR},
+      paperId = #{paperid,jdbcType=INTEGER},
+      beginTime = #{begintime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      classids = #{classids,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      createUser = #{createuser,jdbcType=VARCHAR}
+    where examId = #{examid,jdbcType=INTEGER}
+  </update>
+</mapper>

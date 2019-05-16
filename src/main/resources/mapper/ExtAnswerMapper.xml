@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.oxy.dao.ext.ExtAnswerMapper">
+    <insert id="insertAnswer" useGeneratedKeys="false">
+        INSERT into User_Answer
+        (examId,paperId, questionId,userId,type,userAnswer,Answer,isCorrrent) 
+        VALUES 
+        <foreach collection="list" item="t" index="index" separator =",">
+        (
+        #{t.examid},
+        #{t.paperid},
+        #{t.questionid},
+        #{t.userid},
+        #{t.type},
+        #{t.useranswer},
+        #{t.answer},
+        #{t.iscorrrent}   
+        )
+     </foreach>
+    </insert>
+    
+     <select id="getScoreList" resultType="java.util.LinkedHashMap">
+        SELECT
+            u.UserCode as "code",
+            u. NAME as "name",
+            c.className as "className",
+            e.examName as "examName",
+            e. SUBJECT as "subject",
+            p. NAME as "paperName",
+            s.score as "score"
+        FROM
+            score s
+        LEFT JOIN USER u ON u.UserID = s.userId
+        LEFT JOIN classes c ON c.classId = u.classId
+        LEFT JOIN examination e ON e.examId = s.examId
+        LEFT JOIN examinationpaper p ON p.PaperID = s.paperId
+        <where>
+            <if test="vo.examName !=null and vo.examName !=''">
+              and  e.examName like concat('%',#{vo.examName},'%')
+            </if>
+            <if test="vo.paperName !=null and vo.paperName !=''">
+               and  p.Name like concat('%',#{vo.paperName},'%')
+            </if>
+            <if test="vo.subject !=null and vo.subject !=''">
+               and  e.subject like concat('%',#{vo.subject},'%')
+            </if>
+            <if test="vo.classId !=null">
+               and u.classId= #{vo.classId}
+            </if>
+            <if test="vo.isStudent">
+               and u.UserID= #{userId}
+            </if>
+        
+        </where>
+    </select>
+    
+    <select id="getSAQList" resultType="java.util.LinkedHashMap">
+        SELECT
+            aq.SAQID as "questionId",
+            aq.Question as "question",
+            aq.Answer as "answer"
+            <if test="analyze.toString()!='false'.toString">
+                ,
+            (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.SAQID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+            ) AS "totalNum",
+        (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.SAQID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+                    and Answer = userAnswer
+            ) AS "corrent",
+        (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.SAQID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+                    and Answer != userAnswer
+            ) AS "wrong"
+            
+            </if>
+            
+        FROM
+            saq aq
+        WHERE
+            aq.SAQID IN (
+                SELECT
+                    SUBSTRING_INDEX(
+                        SUBSTRING_INDEX(p.SAQIds,',',help_topic_id + 1),',' ,- 1)
+                FROM
+                    mysql.help_topic,
+                    examinationpaper p
+                WHERE
+                    help_topic_id &lt; LENGTH(p.SAQIds) - LENGTH(REPLACE(p.SAQIds, ',', '')) + 1
+                AND p.PaperID = #{paperId}
+            )
+    </select>
+    
+    
+    
+    
+    
+    <select id="getSingleList" resultType="java.util.LinkedHashMap">
+        SELECT
+            aq.QuestionID as "questionId",
+            aq.Question as "question",
+            aq.ChoiceOne as "one",
+            aq.ChoiceTwo as "two",
+            aq.ChoiceThree as "three",
+            aq.ChoiceFour as "four",
+            aq.Answer as "answer"
+            <if test="analyze.toString()!='false'.toString">
+                ,
+            (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.QuestionID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+            ) AS "totalNum",
+        (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.QuestionID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+                    and Answer = userAnswer
+            ) AS "corrent",
+        (
+                SELECT
+                    COUNT(*)
+                FROM
+                    User_Answer
+                WHERE
+                    examId = #{examId}
+                    AND questionId = aq.QuestionID
+                    and paperId=#{paperId}
+                    AND type = #{type}
+                    and Answer != userAnswer
+            ) AS "wrong"
+            
+            </if>
+            
+        FROM
+            singleselect aq
+        WHERE
+            aq.QuestionID IN (
+                SELECT
+                    SUBSTRING_INDEX(
+                        SUBSTRING_INDEX(p.QuestionIds,',',help_topic_id + 1),',' ,- 1)
+                FROM
+                    mysql.help_topic,
+                    examinationpaper p
+                WHERE
+                    help_topic_id &lt; LENGTH(p.QuestionIds) - LENGTH(REPLACE(p.QuestionIds, ',', '')) + 1
+                AND p.PaperID = #{paperId}
+            )
+    </select>
+    
+    
+    
+  </mapper>

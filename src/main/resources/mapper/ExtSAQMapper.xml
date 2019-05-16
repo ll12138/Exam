@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.oxy.dao.ext.ExtSAQMapper">
+  	<select id="listPage" parameterType="com.oxy.dto.itemBank.PageSaqDTO"
+    	resultType="com.oxy.dto.itemBank.PageSaqDTO">
+    	select 
+        s.SAQID as saqid,
+    	s.Question as question,
+    	s.Subject as subject,
+    	s.Chapter as chapter,
+    	s.Difficulty as difficulty,
+    	u.Name as createuser,
+    	s.Answer as answer
+    	From saq s
+        left  join user u on u.UserID=s.CreateUser
+        
+    	<where>
+    		<if test="param != null">
+    			<if test="param.question != null and param.question != '' ">
+    				<bind name="question" value="'%' + param.question + '%'"/>
+    				and s.Question like #{question} 
+    			</if>
+    		</if>
+    		<if test="param != null">
+    			<if test="param.subject != null and param.subject != '' ">
+    				<bind name="subject" value="'%' + param.subject + '%'"/>
+    				and s.Subject like #{subject} 
+    			</if>
+    		</if>
+    		<if test="param != null">
+    			<if test="param.chapter != null and param.chapter != '' ">
+    				<bind name="chapter" value="'%' + param.chapter + '%'"/>
+    				and s.Chapter like #{chapter} 
+    			</if>
+    		</if>
+    		<if test="param != null">
+    			<if test="param.createuser != null and param.createuser != '' ">
+    				<bind name="createuser" value="'%' + param.createuser + '%'"/>
+    				and CreateUser like #{createuser} 
+    			</if>
+    		</if>
+    	</where>
+    </select>	
+    
+     <!--  <insert id="addSaqList" useGeneratedKeys="false">
+        INSERT ALL
+        <foreach collection="lists" item="t" index="index" >
+          into saq 
+          (Question, 
+           Subject,
+           Chapter,
+           Difficulty,
+           Answer,
+           CreateUser
+          ) VALUES 
+        (
+        #{t.question},
+        #{t.subject},
+        #{t.chapter},
+        #{t.difficulty},
+        #{t.answer},
+        #{user}   
+        )
+     </foreach>
+        SELECT 1 FROM DUAL
+    </insert> -->
+    
+     <insert id="addSaqList" useGeneratedKeys="false">
+        INSERT into saq
+        (Question, Subject,Chapter,Difficulty,Answer,CreateUser) 
+        VALUES 
+        <foreach collection="lists" item="t" index="index" separator =",">
+        (
+        #{t.question},
+        #{t.subject},
+        #{t.chapter},
+        #{t.difficulty},
+        #{t.answer},
+        #{user}   
+        )
+     </foreach>
+    </insert>
+    
+    
+  </mapper>

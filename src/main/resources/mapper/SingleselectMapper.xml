@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxy.dao.SingleselectMapper">
+  <resultMap id="BaseResultMap" type="com.oxy.model.Singleselect">
+    <id column="QuestionID" jdbcType="INTEGER" property="questionid" />
+    <result column="Question" jdbcType="VARCHAR" property="question" />
+    <result column="ChoiceOne" jdbcType="VARCHAR" property="choiceone" />
+    <result column="ChoiceTwo" jdbcType="VARCHAR" property="choicetwo" />
+    <result column="ChoiceThree" jdbcType="VARCHAR" property="choicethree" />
+    <result column="ChoiceFour" jdbcType="VARCHAR" property="choicefour" />
+    <result column="Answer" jdbcType="VARCHAR" property="answer" />
+    <result column="Subject" jdbcType="VARCHAR" property="subject" />
+    <result column="Chapter" jdbcType="VARCHAR" property="chapter" />
+    <result column="Difficulty" jdbcType="INTEGER" property="difficulty" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createuser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    QuestionID, Question, ChoiceOne, ChoiceTwo, ChoiceThree, ChoiceFour, Answer, Subject, 
+    Chapter, Difficulty, CreateUser
+  </sql>
+  <select id="selectByExample" parameterType="com.oxy.model.SingleselectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from singleselect
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from singleselect
+    where QuestionID = #{questionid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from singleselect
+    where QuestionID = #{questionid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.oxy.model.SingleselectExample">
+    delete from singleselect
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.oxy.model.Singleselect">
+    insert into singleselect (QuestionID, Question, ChoiceOne, 
+      ChoiceTwo, ChoiceThree, ChoiceFour, 
+      Answer, Subject, Chapter, 
+      Difficulty, CreateUser)
+    values (#{questionid,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, #{choiceone,jdbcType=VARCHAR}, 
+      #{choicetwo,jdbcType=VARCHAR}, #{choicethree,jdbcType=VARCHAR}, #{choicefour,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{chapter,jdbcType=VARCHAR}, 
+      #{difficulty,jdbcType=INTEGER}, #{createuser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oxy.model.Singleselect">
+    insert into singleselect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        QuestionID,
+      </if>
+      <if test="question != null">
+        Question,
+      </if>
+      <if test="choiceone != null">
+        ChoiceOne,
+      </if>
+      <if test="choicetwo != null">
+        ChoiceTwo,
+      </if>
+      <if test="choicethree != null">
+        ChoiceThree,
+      </if>
+      <if test="choicefour != null">
+        ChoiceFour,
+      </if>
+      <if test="answer != null">
+        Answer,
+      </if>
+      <if test="subject != null">
+        Subject,
+      </if>
+      <if test="chapter != null">
+        Chapter,
+      </if>
+      <if test="difficulty != null">
+        Difficulty,
+      </if>
+      <if test="createuser != null">
+        CreateUser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=INTEGER},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceone != null">
+        #{choiceone,jdbcType=VARCHAR},
+      </if>
+      <if test="choicetwo != null">
+        #{choicetwo,jdbcType=VARCHAR},
+      </if>
+      <if test="choicethree != null">
+        #{choicethree,jdbcType=VARCHAR},
+      </if>
+      <if test="choicefour != null">
+        #{choicefour,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="chapter != null">
+        #{chapter,jdbcType=VARCHAR},
+      </if>
+      <if test="difficulty != null">
+        #{difficulty,jdbcType=INTEGER},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.oxy.model.SingleselectExample" resultType="java.lang.Long">
+    select count(*) from singleselect
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update singleselect
+    <set>
+      <if test="record.questionid != null">
+        QuestionID = #{record.questionid,jdbcType=INTEGER},
+      </if>
+      <if test="record.question != null">
+        Question = #{record.question,jdbcType=VARCHAR},
+      </if>
+      <if test="record.choiceone != null">
+        ChoiceOne = #{record.choiceone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.choicetwo != null">
+        ChoiceTwo = #{record.choicetwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.choicethree != null">
+        ChoiceThree = #{record.choicethree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.choicefour != null">
+        ChoiceFour = #{record.choicefour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.answer != null">
+        Answer = #{record.answer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subject != null">
+        Subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chapter != null">
+        Chapter = #{record.chapter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.difficulty != null">
+        Difficulty = #{record.difficulty,jdbcType=INTEGER},
+      </if>
+      <if test="record.createuser != null">
+        CreateUser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update singleselect
+    set QuestionID = #{record.questionid,jdbcType=INTEGER},
+      Question = #{record.question,jdbcType=VARCHAR},
+      ChoiceOne = #{record.choiceone,jdbcType=VARCHAR},
+      ChoiceTwo = #{record.choicetwo,jdbcType=VARCHAR},
+      ChoiceThree = #{record.choicethree,jdbcType=VARCHAR},
+      ChoiceFour = #{record.choicefour,jdbcType=VARCHAR},
+      Answer = #{record.answer,jdbcType=VARCHAR},
+      Subject = #{record.subject,jdbcType=VARCHAR},
+      Chapter = #{record.chapter,jdbcType=VARCHAR},
+      Difficulty = #{record.difficulty,jdbcType=INTEGER},
+      CreateUser = #{record.createuser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oxy.model.Singleselect">
+    update singleselect
+    <set>
+      <if test="question != null">
+        Question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceone != null">
+        ChoiceOne = #{choiceone,jdbcType=VARCHAR},
+      </if>
+      <if test="choicetwo != null">
+        ChoiceTwo = #{choicetwo,jdbcType=VARCHAR},
+      </if>
+      <if test="choicethree != null">
+        ChoiceThree = #{choicethree,jdbcType=VARCHAR},
+      </if>
+      <if test="choicefour != null">
+        ChoiceFour = #{choicefour,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        Answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        Subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="chapter != null">
+        Chapter = #{chapter,jdbcType=VARCHAR},
+      </if>
+      <if test="difficulty != null">
+        Difficulty = #{difficulty,jdbcType=INTEGER},
+      </if>
+      <if test="createuser != null">
+        CreateUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where QuestionID = #{questionid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oxy.model.Singleselect">
+    update singleselect
+    set Question = #{question,jdbcType=VARCHAR},
+      ChoiceOne = #{choiceone,jdbcType=VARCHAR},
+      ChoiceTwo = #{choicetwo,jdbcType=VARCHAR},
+      ChoiceThree = #{choicethree,jdbcType=VARCHAR},
+      ChoiceFour = #{choicefour,jdbcType=VARCHAR},
+      Answer = #{answer,jdbcType=VARCHAR},
+      Subject = #{subject,jdbcType=VARCHAR},
+      Chapter = #{chapter,jdbcType=VARCHAR},
+      Difficulty = #{difficulty,jdbcType=INTEGER},
+      CreateUser = #{createuser,jdbcType=VARCHAR}
+    where QuestionID = #{questionid,jdbcType=INTEGER}
+  </update>
+</mapper>

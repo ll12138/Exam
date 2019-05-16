@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxy.dao.ext.ExtUserMapper">
+  <select id="listPage" parameterType="com.oxy.dto.user.PageUserDTO"
+    resultType="com.oxy.dto.user.PageUserDTO">
+    select UserID as userid,
+    UserCode as usercode,
+    Name as name,
+    Role as role
+    FROM user
+    <where>
+      <if test="param != null">
+        <if test="param.name != null and param.name!='' ">
+          <bind name="pattern" value="'%' + param.name + '%'"/>
+          and Name like #{pattern}
+        </if>
+        <if test="param.role != null and param.role!=''">
+          and Role = #{param.role}
+        </if>
+        <if test="param.usercode != null">
+          and UserCode = #{param.usercode}
+        </if>
+        <if test="param.userid != null">
+          and UserId = #{param.userid}
+        </if>
+      </if>
+    </where>
+  </select>
+    
+    
+   <insert id="addUserList"  parameterType="java.util.ArrayList" useGeneratedKeys="true" keyProperty="userid">
+        INSERT  into user 
+         (UserID,
+           UserCode, 
+           Name,
+           Password,
+           Role,
+           classId
+          ) VALUES 
+        <foreach collection="list" item="item" index="index" separator =",">
+        (
+        #{item.userid},
+        #{item.usercode},
+        #{item.name},
+        #{item.password},
+        #{item.role},
+        #{item.classid}
+        )
+     </foreach>
+    </insert>
+    
+    <update id="updateClass">
+        update user set classId=null where classId=#{classid}
+    
+    </update>
+
+</mapper>
